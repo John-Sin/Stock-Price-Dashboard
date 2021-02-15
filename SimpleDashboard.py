@@ -8,9 +8,11 @@ import yfinance
 from Layout import *
 
 
+
 ##### Dashboard layout #####
 # Dash Set up
 app = dash.Dash()
+server = app.server
 
 # Base Layout
 app.layout = html.Div([
