@@ -6,6 +6,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 
+
 ##### Layouts for Tab 1 #####
 # Dropdown list for single stock choice
 def get_tab1_info_box():
