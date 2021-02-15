@@ -8,7 +8,6 @@ import yfinance
 from Layout import *
 
 
-
 ##### Dashboard layout #####
 # Dash Set up
 app = dash.Dash()
