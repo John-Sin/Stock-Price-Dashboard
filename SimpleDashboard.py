@@ -7,8 +7,6 @@ from dash.dependencies import Input, Output, State
 import yfinance
 from Layout import *
 
-
-
 ##### Dashboard layout #####
 # Dash Set up
 app = dash.Dash()
@@ -19,28 +17,29 @@ app.layout = html.Div([
 	dcc.Tabs(id='dashboard-tabs', value='price-tab',children=[
 		dcc.Tab(label='Stock Price', value='price-tab',children=[
 			html.Div([html.H2(id='tab1-stock-name',
-				           style={'width':'30%','display':'inline-block'}), 
-				      html.H4(id='tab1-ticker', 
-				           style={'width':'10%','display':'inline-block'})],
-				      style={'width':'90%','margin':'auto'}),
+						   style={'width':'30%','display':'inline-block'}), 
+					  html.H4(id='tab1-ticker', 
+						   style={'width':'10%','display':'inline-block'})],
+					  style={'width':'90%','margin':'auto'}),
 			# Position 0, Title
 			html.Div(get_tab1_info_box(),
-				     style={'width':'90%','margin':'auto'}),
+					 style={'width':'90%','margin':'auto'}),
 			# Position 1, Info and dropdown
 			html.Div(get_stats_graph_layout('tab1'),
-				     style={'width':'90%','margin':'auto'})
+					 style={'width':'90%','margin':'auto'})
 			# Position 2, Table of stats and graph
-			]), # Tab 1, End price-tab
+			]), # Tab 1, End Stock Price-tab
+  
 		dcc.Tab(label='Stock/Index Growth', value='change-tab',children=[
 			html.Div([html.H2('Stock Price Growth vs. Index Growth')],
-				     style={'width':'90%','margin':'auto',
-				            'text-align':'center'}),
+					 style={'width':'90%','margin':'auto',
+							'text-align':'center'}),
 			# Position 0, Title
 			html.Div(get_tab2_info_box(),
-				     style={'width':'90%','margin':'auto'}),
+					 style={'width':'90%','margin':'auto'}),
 			# Position 1, Info and dropdown
 			html.Div(get_stats_graph_layout('tab2'),
-				     style={'width':'90%','margin':'auto'})
+					 style={'width':'90%','margin':'auto'})
 			# Position 2, Table of stats and graph
 			]) # Tab 2, End change-tab
 		]) # End Tabs
@@ -95,45 +94,45 @@ def getMA(stock, time, date_list):
 
 # Generate stock price and graph on Tab 1
 @app.callback([Output('tab1-stock-name','children'), # Stock Name
-	           Output('tab1-ticker','children'), # Ticker
-	           Output('tab1-stock-price','children'), # Current Stock Price
-	           Output('tab1-stock-price-change','children'), # Price Change
-	           Output('tab1-stock-price-change','style'), 
-	           # Price Change font colour
-	           Output('tab1-stock-price-percentchange','children'), 
-	           # Price Percent Change
-	           Output('tab1-stock-price-percentchange','style'), 
-	           # Price Precent Change font colour
-	           Output('tab1-error-message','children'), # Error Message
-	           Output('tab1-vis','figure'), # Stock Price Chart
-	           Output('tab1-table','children')], # Table of Stock Stats
-	          [Input('tab1-submit','n_clicks'), # Button
-	           Input('tab1-time-interval','value')], # Time interval
-	          [State('tab1-ticker-input','value'), # Ticker textbox input
-	           State('tab1-market-dropdown', 'value')]) # Market Dropdown input
+			   Output('tab1-ticker','children'), # Ticker
+			   Output('tab1-stock-price','children'), # Current Stock Price
+			   Output('tab1-stock-price-change','children'), # Price Change
+			   Output('tab1-stock-price-change','style'), 
+			   # Price Change font colour
+			   Output('tab1-stock-price-percentchange','children'), 
+			   # Price Percent Change
+			   Output('tab1-stock-price-percentchange','style'), 
+			   # Price Precent Change font colour
+			   Output('tab1-error-message','children'), # Error Message
+			   Output('tab1-vis','figure'), # Stock Price Chart
+			   Output('tab1-table','children')], # Table of Stock Stats
+			  [Input('tab1-submit','n_clicks'), # Button
+			   Input('tab1-time-interval','value')], # Time interval
+			  [State('tab1-ticker-input','value'), # Ticker textbox input
+			   State('tab1-market-dropdown', 'value')]) # Market Dropdown input
 def get_ticker(n_clicks, time, ticker, mkt):
 	# For default setting
 	if ticker == '':
 		return 'Please Enter a Stock Ticker', \
-		       '','','',{'width':'20%', 'display':'inline-block'},'', \
-		       {'width':'20%', 'display':'inline-block'},'', \
-		       {'data':None}, None
-	# Verify ticker format in respective to stock market
+			   '','','',{'width':'20%', 'display':'inline-block'},'', \
+			   {'width':'20%', 'display':'inline-block'},'', \
+			   {'data':None}, None
+	# Verify ticker format in respect to stock market
 	stockFormat, ticker = verify_ticker(ticker, mkt)
 	# Catch incorrect 
 	if stockFormat is False:
 		return 'Wrong Ticker', '#######', '$##.##', '##.##', \
-		       {'width':'20%', 'display':'inline-block'}, '##.##%', \
-		       {'width':'20%', 'display':'inline-block'}, \
-		       'Error! Please try again.', {'data':None}, None
+			   {'width':'20%', 'display':'inline-block'}, '##.##%', \
+			   {'width':'20%', 'display':'inline-block'}, \
+			   'Error! Please try again.', {'data':None}, None
 	# Obtain stock price and stats
 	stock = yfinance.Ticker(ticker)
 	# Catch if stock exists
 	if stock.history(period='ytd').shape[0] == 0:
 		return 'Wrong Ticker', '#######', '$##.##', '##.##', \
-		       {'width':'20%', 'display':'inline-block'}, '##.##%', \
-		       {'width':'20%', 'display':'inline-block'}, \
-		       'Error! Please try again.', {'data':None}, None
+			   {'width':'20%', 'display':'inline-block'}, '##.##%', \
+			   {'width':'20%', 'display':'inline-block'}, \
+			   'Error! Please try again.', {'data':None}, None
 	### Stock Stats for Info Box ###
 	try: 
 		# Name and price
@@ -154,21 +153,21 @@ def get_ticker(n_clicks, time, ticker, mkt):
 		price_percent_change = f'{price_percent_change*100:,.2f}%'
 
 		df = getMA(stock, time, 
-			       stock.history(period=time).reset_index()['Date'])
+				   stock.history(period=time).reset_index()['Date'])
 
 		fig = getCandlestick(df)
 		table = getTab1Table(stock.history(period=time).reset_index(),
-			                 stock.info)
+							 stock.info)
 
 	except:
 		return 'Sorry! Company Not Available', '#######', '$##.##', '##.##', \
-		       {'width':'20%', 'display':'inline-block'}, '##.##%', \
-		       {'width':'20%', 'display':'inline-block'}, \
-		       'Error! Please try again another Company.', {'data':None}, None
+			   {'width':'20%', 'display':'inline-block'}, '##.##%', \
+			   {'width':'20%', 'display':'inline-block'}, \
+			   'Error! Please try again another Company.', {'data':None}, None
 
 
 	return stock_name, ticker, price, price_change, price_change_colour, \
-	       price_percent_change, price_change_colour, '', fig, table
+		   price_percent_change, price_change_colour, '', fig, table
 
 ##### Callbacks for Tab 2 ######
 """
@@ -185,27 +184,27 @@ user to input which market to look and return 2 outputs.
    stocks.
 """
 @app.callback([Output('tab2-stock-include','options'),
-	           Output('tab2-stock-include','value')],
-	           [Input('tab2-index-choice','value')])
+			   Output('tab2-stock-include','value')],
+			   [Input('tab2-index-choice','value')])
 def generate_dropdown_stocknames(mkt):
 	if mkt == 'hsi':
-		stock_list = pd.read_csv('../IndexComponents/HengSengStockList.csv',
-		             dtype=str)
+		stock_list = pd.read_csv('HengSengStockList.csv',
+					 dtype=str)
 		stock_list = stock_list.sort_values('Ticker')
 		stock_list['label'] = stock_list['Ticker'].astype(str) + '\t' + \
-		                      stock_list['Company']
+							  stock_list['Company']
 		opts = [{'label': label, 'value': ticker} for label, ticker in 
-		        zip(stock_list['label'].tolist(),
-		        	stock_list['Ticker'].tolist())]
+				zip(stock_list['label'].tolist(),
+					stock_list['Ticker'].tolist())]
 		return opts, []
 	elif mkt == 'sp500':
-		stock_list = pd.read_csv('../IndexComponents/SP500StockList.csv',
-			                     engine='python')
+		stock_list = pd.read_csv('SP500StockList.csv',
+								 engine='python')
 		stock_list = stock_list.sort_values('Ticker')
 		stock_list['label'] = stock_list['Ticker']
 		opts = [{'label': label, 'value': ticker} for label, ticker in 
-		        zip(stock_list['label'].tolist(),
-		        	stock_list['Ticker'].tolist())]
+				zip(stock_list['label'].tolist(),
+					stock_list['Ticker'].tolist())]
 		return opts, []
 	return [], []
 
@@ -223,10 +222,10 @@ The steps of this completing this functions:
 5- Generate a html table for the summary of index statistics
 """
 @app.callback([Output('tab2-table','children'),
-	           Output('tab2-vis','figure')],
-	          [Input('tab2-index-choice','value'),
-	           Input('tab2-stock-include','value'),
-	           Input('tab2-time-interval','value')])
+			   Output('tab2-vis','figure')],
+			  [Input('tab2-index-choice','value'),
+			   Input('tab2-stock-include','value'),
+			   Input('tab2-time-interval','value')])
 def generate_tab2_graph(mkt,stocks,time):
 	# Function to calculate price change relative to the first day
 	def get_price_change(price_list):
@@ -290,11 +289,11 @@ def generate_tab2_graph(mkt,stocks,time):
 	range_52weeks = (round(df_index_52weeks['Close'].min(),2), 
 					 round(df_index_52weeks['Close'].max(),2))
 	volume = (index.history(period=time).reset_index()['Volume'].tolist()[-1],
-	          index.history(period=time).reset_index()['Volume'].mean())
+			  index.history(period=time).reset_index()['Volume'].mean())
 	# Generate a table of summary
 	table = getTab2Table(index_col, last_close, range_period, range_52weeks)
 
 	return table, fig
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8000)
+	app.run_server(debug=True, port=5683)
