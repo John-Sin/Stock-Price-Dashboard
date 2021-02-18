@@ -135,18 +135,19 @@ def getLinePlot(df, tab):
 
 
 def getCandlestick(df):
-	data = []
-	data.append(go.Candlestick(x=df['Date'], open=df['Open'],
-		                       high=df['High'], low=df['Low'],
-		                       close=df['Close'], showlegend=False))
-	data.append(go.Scatter(x=df['Date'], y= df['MA50'],name='MA50',line=dict(color='orange', width=2)))
-	data.append(go.Scatter(x=df['Date'], y= df['MA100'],name='MA100',line=dict(color='green', width=2)))
-	data.append(go.Scatter(x=df['Date'], y= df['MA200'],name='MA200',line=dict(color='blue', width=2)))
+    data = []
+    data.append(go.Candlestick(x=df['Date'], open=df['Open'],
+                high=df['High'], low=df['Low'],
+                close=df['Close'], showlegend=False))
+    data.append(go.Scatter(x=df['Date'], y= df['MA50'],name='MA50',line=dict(color='orange', width=2)))
+    data.append(go.Scatter(x=df['Date'], y= df['MA100'],name='MA100',line=dict(color='green', width=2)))
+    data.append(go.Scatter(x=df['Date'], y= df['MA200'],name='MA200',line=dict(color='blue', width=2)))
+    # data.append(go.Bar(x=df['Date'], y=df['Volume']))
 
-	layout = {'xaxis':{'title':'Date','rangeslider':{'visible':False}},
-			  'yaxis':{'title':'Price ($)'},
-	          'hovermode':False}
-	return {'data':data, 'layout':layout}
+    layout = {'xaxis':{'title':'Date','rangeslider':{'visible':False},'linecolor':'white','gridcolor':'white'},
+                'yaxis':{'title':'Price ($)','linecolor':'white','gridcolor':'white'}, 
+                'hovermode':False, 'plot_bgcolor':'#f2f2f2'}
+    return {'data':data, 'layout':layout}
 
 # Generate Table for Tab 1 - Stock Stats
 

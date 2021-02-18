@@ -84,7 +84,7 @@ def getMA(stock, time, date_list):
 		df = stock.history(period='5y')
 	else:
 		df = stock.history(period='10y')
-	df = df.reset_index()[['Date','Open','Low','High','Close']]
+	df = df.reset_index()[['Date','Open','Low','High','Close','Volume']]
 	df['MA50'] = df.Close.rolling(50).mean()
 	df['MA100'] = df.Close.rolling(100).mean()
 	df['MA200'] = df.Close.rolling(200).mean()
