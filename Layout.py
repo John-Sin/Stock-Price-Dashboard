@@ -154,6 +154,8 @@ def getCandlestick(df):
 
 def getTab1Table(df, stock_info):
     last_day = df.iloc[-1, 1:6]
+    #Format last_day_open to 2 decimal places
+    last_day_open = round(last_day['Open'],2)
     # Format the day range of price
     low_day = last_day['Low']
     high_day = last_day['High']
@@ -219,7 +221,7 @@ def getTab1Table(df, stock_info):
         html.Tr([html.Td('Previous Close'), html.Td(),
                  html.Td(stock_info['previousClose'])]),
         html.Tr([html.Td('Open'), html.Td(),
-                 html.Td(last_day['Open'])]),
+                 html.Td(last_day_open)]),
         html.Tr([html.Td('Day Range'), html.Td(),
                  html.Td(range_day)]),
         html.Tr([html.Td('52 Weeks Range'), html.Td(),
