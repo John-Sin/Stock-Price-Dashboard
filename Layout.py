@@ -244,7 +244,7 @@ def getTab1Table(df, stock_info):
                  html.Td(dividend)]),
         html.Tr([html.Td('Ex-Dividend Date'), html.Td(),
                  html.Td(ex_dividend_date)]),
-        html.Tr([html.Td('Earning Per Share (EPS)'), html.Td(),
+        html.Tr([html.Td('Shares Outstanding'), html.Td(),
                  html.Td(f'{shareOutstanding:,.0f}')])
     ])
 
