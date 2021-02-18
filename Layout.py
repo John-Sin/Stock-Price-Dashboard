@@ -161,7 +161,7 @@ def getTab1Table(df, stock_info):
     # Obtain and format 52 weeks range of price
     low_52weeks = df['Low'].min()
     high_52weeks = df['High'].max()
-    range_52weeks = f'{low_day:,.2f}'+' - '+f'{high_day:,.2f}'
+    range_52weeks = f'{low_52weeks:,.2f}'+' - '+f'{high_52weeks:,.2f}'
 
     # Format volume and average volume
     vol = last_day['Volume']
